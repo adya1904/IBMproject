@@ -1,0 +1,507 @@
+swagger: "2.0"
+info:
+  description: "This is a sample Music server."
+  version: "1.0.0"
+  title: "Swagger Music App"
+  contact:
+    email: "apiteam@swagger.io"
+host: "music.swagger.io"
+basePath: "/v2"
+tags:
+- name: "Audio"
+  description: "Everything about audios"
+- name: "Volunteer"
+  description: "Everything about Volunteers"
+- name: "Video"
+  description: "Everything about videos"
+schemes:
+- "https"
+- "http"
+paths:
+  /videos/{videoID}:
+    get:
+      tags:
+      - "Video"
+      summary: "Finds videos by ID"
+      operationId: "getVideo"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "videoID"
+        in: "path"
+        description: "Video Id"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: '#/definitions/Video'
+        "400":
+          description: "Invalid status value"
+    put:
+      tags:
+      - "Video"
+      summary: "Rank the videos"
+      description: ""
+      operationId: "updateRank"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - in: "path"
+        name: "videoID"
+        description: "Find video by VideoID"
+        required: true
+        type : "string"
+      - in: "body"
+        name: "rank"
+        description: "Rank object that needs to be added to the app"
+        required: true
+        schema:
+          $ref: '#/definitions/Video'
+      responses:
+        "400":
+          description: "Invalid ID supplied"
+        "404":
+          description: "Video not found"
+        "405":
+          description: "Validation exception"
+    delete:
+      tags:
+      - "Video"
+      summary: "Deletes a Video"
+      description: ""
+      operationId: "delVideo"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "videoID"
+        in: "path"
+        description: "Video Id"
+        required: true
+        type: "string"
+      responses:
+        "400":
+          description: "Invalid ID supplied"
+        "404":
+          description: "Video not found"
+  /videos:
+    post:
+      tags:
+      - "Video"
+      summary: "Add a new Video to the app"
+      description: ""
+      operationId: "addVideo"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Video object that needs to be added to the app"
+        required: true
+        schema:
+          $ref: '#/definitions/Video'
+      responses:
+        "405":
+          description: "Invalid input"
+  /videos/segments:
+    post:
+      tags:
+      - "Video"
+      summary: "Add a new video segment to the app"
+      description: ""
+      operationId: "addSegment"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "SegmentID"
+        description: "video segment object that needs to be added to the app"
+        required: true
+        schema:
+          $ref: '#/definitions/Segment'
+      responses:
+        "405":
+          description: "Invalid input"
+  /videos/{videoID}/segments/{segmentID}:
+    get:
+      tags:
+      - "Video"
+      summary: "Finds videos by videoID then find the segments by segmentID"
+      operationId: "getsegment"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "videoID"
+        in: "path"
+        description: "Video Id"
+        required: true
+        type: "string"
+      - name: "segmentID"
+        in: "path"
+        description: "Segment ID"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: '#/definitions/Segment'
+        "400":
+          description: "Invalid status value"
+  /videos/images:
+    get:
+      tags:
+      - "Video"
+      summary: "Finds images in videos by image content"
+      operationId: "getImage"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "imagecontent"
+        in: "query"
+        description: "Video Id"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: '#/definitions/Segment'
+        "400":
+          description: "Invalid status value"
+  /audios:
+    post:
+      tags:
+      - "Audio"
+      summary: "Add a new song to the app"
+      description: ""
+      operationId: "addAudio"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "song object that needs to be added to the app"
+        required: true
+        schema:
+          $ref: '#/definitions/Video'
+      responses:
+        "405":
+          description: "Invalid input"
+  /audios/{audiofileID}:
+    get:
+      tags:
+      - "Audio"
+      summary: "Finds videos by name"
+      # description: "Multiple names can be provided with comma separated strings"
+      operationId: "getAudio"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "audiofileID"
+        in: "path"
+        description: "Video Id"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: '#/definitions/Video'
+        "400":
+          description: "Invalid status value"
+    put:
+      tags:
+      - "Audio"
+      summary: "Update an existing song"
+      description: ""
+      operationId: "updateAudio"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - in: "path"
+        name: "audiofileID"
+        description: "Song object that needs to be added to the app"
+        required: true
+        type : "string"
+      responses:
+        "400":
+          description: "Invalid ID supplied"
+        "404":
+          description: "Song not found"
+        "405":
+          description: "Validation exception"
+  /volunteers:
+    get:
+      tags:
+      - "Volunteer"
+      summary: "Finds videos by name"
+      # description: "Multiple names can be provided with comma separated strings"
+      operationId: "getVolunteer"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "VolunteerType"
+        in: "query"
+        description: "Video Id"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: '#/definitions/Volunteer'
+        "400":
+          description: "Invalid status value"
+  /videos/{videoID}/comments:
+    post:
+      tags:
+      - "Audio"
+      summary: "Add a new song to the app"
+      description: ""
+      operationId: "addComment"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - in: "path"
+        name: "videoID"
+        description: "song object that needs to be added to the app"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "song object that needs to be added to the app"
+        required: true
+        schema:
+          $ref: '#/definitions/Video'
+      responses:
+        "405":
+          description: "Invalid input"
+  /videos/{videoID}/comments{commentID}:
+    get:
+      tags:
+      - "Video"
+      summary: "Finds videos by name"
+      # description: "Multiple names can be provided with comma separated strings"
+      operationId: "getComment"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "videoID"
+        in: "path"
+        description: "Video Id"
+        required: true
+        type: "string"
+      - name: "commentID"
+        in: "path"
+        description: "Video Id"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: '#/definitions/Video'
+        "400":
+          description: "Invalid status value"
+  /videos/{videoID}/authors:
+    post:
+      tags:
+      - "Audio"
+      summary: "Add a new song to the app"
+      description: ""
+      operationId: "addAuthor"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - in: "path"
+        name: "videoID"
+        description: "song object that needs to be added to the app"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "song object that needs to be added to the app"
+        required: true
+        schema:
+          $ref: '#/definitions/Video'
+      responses:
+        "405":
+          description: "Invalid input" 
+  /videos/{videoID}/authors/{authorsID}:
+    get:
+      tags:
+      - "Video"
+      summary: "Finds videos by name"
+      # description: "Multiple names can be provided with comma separated strings"
+      operationId: "getAuthor"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "videoID"
+        in: "path"
+        description: "Video Id"
+        required: true
+        type: "string"
+      - name: "authorsID"
+        in: "path"
+        description: "Video Id"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: '#/definitions/Segment'
+        "400":
+          description: "Invalid status value"
+definitions:
+  Tag:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      name:
+        type: "string"
+    xml:
+      name: "Tag"
+  Video:
+    type: "object"
+    required:
+    - "name"
+    properties:
+      id:
+        type: "string"
+        # format: "int64"
+      # category:
+      #   $ref: "#/definitions/Category"
+      name:
+        type: "string"
+        example: "song1"
+      tag: 
+        type: "string"
+        example: "news"
+      comment: 
+        type: "string"
+        example: "any string"
+      rank:
+        type: "integer"
+        format: "int64"
+    xml:
+      name: "Song"
+  Segment:
+    type: "object"
+    required:
+    - "name"
+    properties:
+      id:
+        type: "string"
+        # format: "int64"
+      # category:
+      #   $ref: "#/definitions/Category"
+      name:
+        type: "string"
+        example: "song1"
+      tag: 
+        type: "string"
+        example: "news"
+      comment: 
+        type: "string"
+        example: "any string"
+    xml:
+      name: "Song"
+  Volunteer:
+    type: "object"
+    required:
+    - "name"
+    properties:
+      type:
+        type: "string"
+        # format: "int64"
+      # category:
+      #   $ref: "#/definitions/Category"
+      name:
+        type: "string"
+        example: "song1"
+      experience: 
+        type: "string"
+        example: "fresher"
+      availability: 
+        type: "string"
+        example: "free/busy"
+      communication:
+        type: "string"
+        example: "text/image/video"
+      qualification:
+        type: "string"
+        example: "someQualification"
+      comment:
+        type: "string"
+        example: "someComment"
+    xml:
+      name: "Song"
+  ApiResponse:
+    type: "object"
+    properties:
+      code:
+        type: "integer"
+        format: "int32"
+      type:
+        type: "string"
+      message:
+        type: "string"
+externalDocs:
+  description: "Find out more about Swagger"
+  url: "http://swagger.io"
