@@ -1,0 +1,286 @@
+swagger: "2.0"
+info:
+  description: "This is a sample Music server."
+  version: "1.0.0"
+  title: "Swagger Music"
+  contact:
+    email: "apiteam@swagger.io"
+host: "music.swagger.io"
+basePath: "/v2"
+tags:
+- name: "song"
+  description: "Everything about songs"
+schemes:
+- "https"
+- "http"
+paths:
+  /song:
+    post:
+      tags:
+      - "song"
+      summary: "Add a new song to the app"
+      description: ""
+      operationId: "addSong"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "song object that needs to be added to the app"
+        required: true
+        schema:
+          $ref: "#/definitions/Song"
+      responses:
+        "405":
+          description: "Invalid input"
+    put:
+      tags:
+      - "song"
+      summary: "Update an existing song"
+      description: ""
+      operationId: "updateSong"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Song object that needs to be added to the app"
+        required: true
+        schema:
+          $ref: "#/definitions/Song"
+      responses:
+        "400":
+          description: "Invalid ID supplied"
+        "404":
+          description: "Song not found"
+        "405":
+          description: "Validation exception"
+  /song/findBySinger:
+    get:
+      tags:
+      - "song"
+      summary: "Finds songss by name"
+      description: "Multiple names can be provided with comma separated strings"
+      operationId: "findSongsBySingers"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "singers"
+        in: "query"
+        description: "Singer names that need to be considered for filter"
+        required: true
+        type: "array"
+        items:
+          type: "string"
+          enum:
+          - "singer1"
+          - "singer2"
+          - "singer3"
+        collectionFormat: "multi"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Song"
+        "400":
+          description: "Invalid status value"
+  /song/findByName:
+    get:
+      tags:
+      - "song"
+      summary: "Finds Songs by name"
+      description: "Provide name of a song."
+      operationId: "findSongByName"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "name"
+        in: "query"
+        description: "names to filter by"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Song"
+        "400":
+          description: "Invalid tag value"
+      # deprecated: true
+  /song/{songId}:
+    get:
+      tags:
+      - "song"
+      summary: "Find song by ID"
+      description: "Returns a single song"
+      operationId: "getSongById"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "songId"
+        in: "path"
+        description: "ID of song to return"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Song"
+        "400":
+          description: "Invalid ID supplied"
+        "404":
+          description: "Song not found"
+    post:
+      tags:
+      - "song"
+      summary: "Updates a song in the app with form data"
+      description: ""
+      operationId: "updateSongWithForm"
+      consumes:
+      - "application/x-www-form-urlencoded"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "songId"
+        in: "path"
+        description: "ID of song that needs to be updated"
+        required: true
+        type: "integer"
+        format: "int64"
+      - name: "name"
+        in: "formData"
+        description: "Updated name of the song"
+        required: false
+        type: "string"
+      - name: "status"
+        in: "formData"
+        description: "Updated status of the song"
+        required: false
+        type: "string"
+      responses:
+        "405":
+          description: "Invalid input"
+    delete:
+      tags:
+      - "song"
+      summary: "Deletes a song"
+      description: ""
+      operationId: "deleteSong"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "api_key"
+        in: "header"
+        required: false
+        type: "string"
+      - name: "songId"
+        in: "path"
+        description: "Song id to delete"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        "400":
+          description: "Invalid ID supplied"
+        "404":
+          description: "Song not found"
+  /song/{songId}/uploadImage:
+    post:
+      tags:
+      - "song"
+      summary: "uploads an image"
+      description: ""
+      operationId: "uploadFile"
+      consumes:
+      - "multipart/form-data"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "songId"
+        in: "path"
+        description: "ID of song to update"
+        required: true
+        type: "integer"
+        format: "int64"
+      - name: "additionalMetadata"
+        in: "formData"
+        description: "Additional data to pass to app"
+        required: false
+        type: "string"
+      - name: "file"
+        in: "formData"
+        description: "file to upload"
+        required: false
+        type: "file"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/ApiResponse"
+definitions:
+  Tag:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      name:
+        type: "string"
+    xml:
+      name: "Tag"
+  Song:
+    type: "object"
+    required:
+    - "name"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      # category:
+      #   $ref: "#/definitions/Category"
+      name:
+        type: "string"
+        example: "song1"
+      singer:
+        type: "string"
+        example: "singer_name"
+      music: 
+        type: "string"
+        example: "music_director_name"
+      album: 
+        type: "string"
+        example: "album_name"
+    xml:
+      name: "Song"
+  ApiResponse:
+    type: "object"
+    properties:
+      code:
+        type: "integer"
+        format: "int32"
+      type:
+        type: "string"
+      message:
+        type: "string"
+externalDocs:
+  description: "Find out more about Swagger"
+  url: "http://swagger.io"

@@ -1,0 +1,347 @@
+{
+  "/pet": {
+    "post": [
+      {
+        "in": "body"
+      },
+      {
+        "name": "body"
+      },
+      {
+        "required": true
+      }
+    ],
+    "put": [
+      {
+        "in": "body"
+      },
+      {
+        "name": "body"
+      },
+      {
+        "required": true
+      }
+    ]
+  },
+  "/pet/findByStatus": {
+    "get": [
+      {
+        "name": "status"
+      },
+      {
+        "in": "query"
+      },
+      {
+        "required": true
+      },
+      {
+        "type": "array"
+      }
+    ]
+  },
+  "/pet/findByTags": {
+    "get": [
+      {
+        "name": "tags"
+      },
+      {
+        "in": "query"
+      },
+      {
+        "required": true
+      },
+      {
+        "type": "array"
+      }
+    ]
+  },
+  "/pet/{petId}": {
+    "get": [
+      {
+        "name": "petId"
+      },
+      {
+        "in": "path"
+      },
+      {
+        "required": true
+      },
+      {
+        "type": "integer"
+      }
+    ],
+    "post": [
+      {
+        "name": "petId"
+      },
+      {
+        "in": "path"
+      },
+      {
+        "required": true
+      },
+      {
+        "type": "integer"
+      },
+      {
+        "name": "name"
+      },
+      {
+        "in": "formData"
+      },
+      {
+        "required": false
+      },
+      {
+        "type": "string"
+      },
+      {
+        "name": "status"
+      },
+      {
+        "in": "formData"
+      },
+      {
+        "required": false
+      },
+      {
+        "type": "string"
+      }
+    ],
+    "delete": [
+      {
+        "name": "api_key"
+      },
+      {
+        "in": "header"
+      },
+      {
+        "required": false
+      },
+      {
+        "type": "string"
+      },
+      {
+        "name": "petId"
+      },
+      {
+        "in": "path"
+      },
+      {
+        "required": true
+      },
+      {
+        "type": "integer"
+      }
+    ]
+  },
+  "/pet/{petId}/uploadImage": {
+    "post": [
+      {
+        "name": "petId"
+      },
+      {
+        "in": "path"
+      },
+      {
+        "required": true
+      },
+      {
+        "type": "integer"
+      },
+      {
+        "name": "additionalMetadata"
+      },
+      {
+        "in": "formData"
+      },
+      {
+        "required": false
+      },
+      {
+        "type": "string"
+      },
+      {
+        "name": "file"
+      },
+      {
+        "in": "formData"
+      },
+      {
+        "required": false
+      },
+      {
+        "type": "file"
+      }
+    ]
+  },
+  "/store/inventory": {
+    "get": []
+  },
+  "/store/order": {
+    "post": [
+      {
+        "in": "body"
+      },
+      {
+        "name": "body"
+      },
+      {
+        "required": true
+      }
+    ]
+  },
+  "/store/order/{orderId}": {
+    "get": [
+      {
+        "name": "orderId"
+      },
+      {
+        "in": "path"
+      },
+      {
+        "required": true
+      },
+      {
+        "type": "integer"
+      }
+    ],
+    "delete": [
+      {
+        "name": "orderId"
+      },
+      {
+        "in": "path"
+      },
+      {
+        "required": true
+      },
+      {
+        "type": "integer"
+      }
+    ]
+  },
+  "/user": {
+    "post": [
+      {
+        "in": "body"
+      },
+      {
+        "name": "body"
+      },
+      {
+        "required": true
+      }
+    ]
+  },
+  "/user/createWithArray": {
+    "post": [
+      {
+        "in": "body"
+      },
+      {
+        "name": "body"
+      },
+      {
+        "required": true
+      }
+    ]
+  },
+  "/user/createWithList": {
+    "post": [
+      {
+        "in": "body"
+      },
+      {
+        "name": "body"
+      },
+      {
+        "required": true
+      }
+    ]
+  },
+  "/user/login": {
+    "get": [
+      {
+        "name": "username"
+      },
+      {
+        "in": "query"
+      },
+      {
+        "required": true
+      },
+      {
+        "type": "string"
+      },
+      {
+        "name": "password"
+      },
+      {
+        "in": "query"
+      },
+      {
+        "required": true
+      },
+      {
+        "type": "string"
+      }
+    ]
+  },
+  "/user/logout": {
+    "get": []
+  },
+  "/user/{username}": {
+    "get": [
+      {
+        "name": "username"
+      },
+      {
+        "in": "path"
+      },
+      {
+        "required": true
+      },
+      {
+        "type": "string"
+      }
+    ],
+    "put": [
+      {
+        "name": "username"
+      },
+      {
+        "in": "path"
+      },
+      {
+        "required": true
+      },
+      {
+        "type": "string"
+      },
+      {
+        "in": "body"
+      },
+      {
+        "name": "body"
+      },
+      {
+        "required": true
+      }
+    ],
+    "delete": [
+      {
+        "name": "username"
+      },
+      {
+        "in": "path"
+      },
+      {
+        "required": true
+      },
+      {
+        "type": "string"
+      }
+    ]
+  }
+}

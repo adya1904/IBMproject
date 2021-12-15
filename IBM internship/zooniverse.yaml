@@ -18,6 +18,29 @@ schemes:
 - "https"
 - "http"
 paths:
+  /videos:
+    post:
+      tags:
+      - "Video"
+      summary: "Add a new Video to the app"
+      description: ""
+      operationId: "addVideo"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Video object that needs to be added to the app"
+        required: true
+        schema:
+          $ref: '#/definitions/Video'
+      responses:
+        "405":
+          description: "Invalid input"
   /videos/{videoID}:
     get:
       tags:
@@ -30,7 +53,7 @@ paths:
       parameters:
       - name: "videoID"
         in: "path"
-        description: "Video Id"
+        description: "Status values that need to be considered for filter"
         required: true
         type: "string"
       responses:
@@ -93,29 +116,6 @@ paths:
           description: "Invalid ID supplied"
         "404":
           description: "Video not found"
-  /videos:
-    post:
-      tags:
-      - "Video"
-      summary: "Add a new Video to the app"
-      description: ""
-      operationId: "addVideo"
-      consumes:
-      - "application/json"
-      - "application/xml"
-      produces:
-      - "application/xml"
-      - "application/json"
-      parameters:
-      - in: "body"
-        name: "body"
-        description: "Video object that needs to be added to the app"
-        required: true
-        schema:
-          $ref: '#/definitions/Video'
-      responses:
-        "405":
-          description: "Invalid input"
   /videos/segments:
     post:
       tags:
@@ -151,12 +151,12 @@ paths:
       parameters:
       - name: "videoID"
         in: "path"
-        description: "Video Id"
+        description: "Status values that need to be considered for filter"
         required: true
         type: "string"
       - name: "segmentID"
         in: "path"
-        description: "Segment ID"
+        description: "Status values that need to be considered for filter"
         required: true
         type: "string"
       responses:
@@ -180,7 +180,7 @@ paths:
       parameters:
       - name: "imagecontent"
         in: "query"
-        description: "Video Id"
+        description: "Status values that need to be considered for filter"
         required: true
         type: "string"
       responses:
@@ -196,7 +196,7 @@ paths:
     post:
       tags:
       - "Audio"
-      summary: "Add a new song to the app"
+      summary: "Add a new audio to the app"
       description: ""
       operationId: "addAudio"
       consumes:
@@ -208,7 +208,7 @@ paths:
       parameters:
       - in: "body"
         name: "body"
-        description: "song object that needs to be added to the app"
+        description: "audio object that needs to be added to the app"
         required: true
         schema:
           $ref: '#/definitions/Video'
@@ -219,8 +219,7 @@ paths:
     get:
       tags:
       - "Audio"
-      summary: "Finds videos by name"
-      # description: "Multiple names can be provided with comma separated strings"
+      summary: "Finds audio by audio file ID"
       operationId: "getAudio"
       produces:
       - "application/xml"
@@ -228,7 +227,7 @@ paths:
       parameters:
       - name: "audiofileID"
         in: "path"
-        description: "Video Id"
+        description: "Status values that need to be considered for filter"
         required: true
         type: "string"
       responses:
@@ -243,7 +242,7 @@ paths:
     put:
       tags:
       - "Audio"
-      summary: "Update an existing song"
+      summary: "Update an existing audio"
       description: ""
       operationId: "updateAudio"
       consumes:
@@ -255,22 +254,68 @@ paths:
       parameters:
       - in: "path"
         name: "audiofileID"
-        description: "Song object that needs to be added to the app"
+        description: "audio object that needs to be updated in the app"
         required: true
         type : "string"
       responses:
         "400":
           description: "Invalid ID supplied"
         "404":
-          description: "Song not found"
+          description: "Audio not found"
         "405":
           description: "Validation exception"
+  /news:
+    post:
+      tags:
+      - "Video"
+      summary: "Add a new news to the app"
+      description: ""
+      operationId: "addNews"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "News object that needs to be added to the app"
+        required: true
+        schema:
+          $ref: '#/definitions/Video'
+      responses:
+        "405":
+          description: "Invalid input"
+  /news/{anykeysearch}:
+    get:
+      tags:
+      - "Video"
+      summary: "Finds news by any key search"
+      operationId: "getNews"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "anykeysearch"
+        in: "path"
+        description: "Status values that need to be considered for filter"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: '#/definitions/Segment'
+        "400":
+          description: "Invalid status value"        
   /volunteers:
     get:
       tags:
       - "Volunteer"
-      summary: "Finds videos by name"
-      # description: "Multiple names can be provided with comma separated strings"
+      summary: "Finds Volunteer by type of the volunteer"
       operationId: "getVolunteer"
       produces:
       - "application/xml"
@@ -278,7 +323,7 @@ paths:
       parameters:
       - name: "VolunteerType"
         in: "query"
-        description: "Video Id"
+        description: "Status values that need to be considered for filter"
         required: true
         type: "string"
       responses:
@@ -294,7 +339,7 @@ paths:
     post:
       tags:
       - "Audio"
-      summary: "Add a new song to the app"
+      summary: "Add a new comment to a video in the app"
       description: ""
       operationId: "addComment"
       consumes:
@@ -306,12 +351,12 @@ paths:
       parameters:
       - in: "path"
         name: "videoID"
-        description: "song object that needs to be added to the app"
+        description: "Status values that need to be considered for filter"
         required: true
         type: "string"
       - in: "body"
         name: "body"
-        description: "song object that needs to be added to the app"
+        description: "comment object that needs to be added to the video in the app"
         required: true
         schema:
           $ref: '#/definitions/Video'
@@ -322,8 +367,7 @@ paths:
     get:
       tags:
       - "Video"
-      summary: "Finds videos by name"
-      # description: "Multiple names can be provided with comma separated strings"
+      summary: "Finds video and comment by videoId and commentId respecively"
       operationId: "getComment"
       produces:
       - "application/xml"
@@ -331,12 +375,12 @@ paths:
       parameters:
       - name: "videoID"
         in: "path"
-        description: "Video Id"
+        description: "Status values that need to be considered for filter"
         required: true
         type: "string"
       - name: "commentID"
         in: "path"
-        description: "Video Id"
+        description: "Status values that need to be considered for filter"
         required: true
         type: "string"
       responses:
@@ -351,8 +395,8 @@ paths:
   /videos/{videoID}/authors:
     post:
       tags:
-      - "Audio"
-      summary: "Add a new song to the app"
+      - "Video"
+      summary: "Add a author to a video in the app"
       description: ""
       operationId: "addAuthor"
       consumes:
@@ -364,12 +408,12 @@ paths:
       parameters:
       - in: "path"
         name: "videoID"
-        description: "song object that needs to be added to the app"
+        description: "Status values that need to be considered for filter"
         required: true
         type: "string"
       - in: "body"
         name: "body"
-        description: "song object that needs to be added to the app"
+        description: "Authour object that needs to be added to the video"
         required: true
         schema:
           $ref: '#/definitions/Video'
@@ -380,8 +424,7 @@ paths:
     get:
       tags:
       - "Video"
-      summary: "Finds videos by name"
-      # description: "Multiple names can be provided with comma separated strings"
+      summary: "Finds video then author by videoId and authorId respectively"
       operationId: "getAuthor"
       produces:
       - "application/xml"
@@ -389,12 +432,12 @@ paths:
       parameters:
       - name: "videoID"
         in: "path"
-        description: "Video Id"
+        description: "Status values that need to be considered for filter"
         required: true
         type: "string"
       - name: "authorsID"
         in: "path"
-        description: "Video Id"
+        description: "Status values that need to be considered for filter"
         required: true
         type: "string"
       responses:
@@ -407,16 +450,6 @@ paths:
         "400":
           description: "Invalid status value"
 definitions:
-  Tag:
-    type: "object"
-    properties:
-      id:
-        type: "integer"
-        format: "int64"
-      name:
-        type: "string"
-    xml:
-      name: "Tag"
   Video:
     type: "object"
     required:
@@ -425,8 +458,6 @@ definitions:
       id:
         type: "string"
         # format: "int64"
-      # category:
-      #   $ref: "#/definitions/Category"
       name:
         type: "string"
         example: "song1"
@@ -440,7 +471,7 @@ definitions:
         type: "integer"
         format: "int64"
     xml:
-      name: "Song"
+      name: "Video"
   Segment:
     type: "object"
     required:
@@ -453,7 +484,7 @@ definitions:
       #   $ref: "#/definitions/Category"
       name:
         type: "string"
-        example: "song1"
+        example: "segment_name"
       tag: 
         type: "string"
         example: "news"
@@ -461,7 +492,28 @@ definitions:
         type: "string"
         example: "any string"
     xml:
-      name: "Song"
+      name: "Segment"
+  News:
+    type: "object"
+    required:
+    - "name"
+    properties:
+      id:
+        type: "string"
+        # format: "int64"
+      # category:
+      #   $ref: "#/definitions/Category"
+      name:
+        type: "string"
+        example: "some_name"
+      tag: 
+        type: "string"
+        example: "news"
+      comment: 
+        type: "string"
+        example: "any string"
+    xml:
+      name: "News"
   Volunteer:
     type: "object"
     required:
@@ -474,7 +526,7 @@ definitions:
       #   $ref: "#/definitions/Category"
       name:
         type: "string"
-        example: "song1"
+        example: "volunteer1"
       experience: 
         type: "string"
         example: "fresher"
@@ -491,7 +543,7 @@ definitions:
         type: "string"
         example: "someComment"
     xml:
-      name: "Song"
+      name: "Volunteer"
   ApiResponse:
     type: "object"
     properties:

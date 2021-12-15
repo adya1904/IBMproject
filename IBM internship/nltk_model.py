@@ -1,9 +1,13 @@
 import nltk
+import json
 from nltk import tag
 from nltk.tokenize import sent_tokenize, word_tokenize
 from nltk.corpus import stopwords
 from nltk.stem import PorterStemmer
 
+from restapifunctions import create_test_script
+baseurl = 'https://virtserver.swaggerhub.com/imadyasha.padhee/MusicAPIZooniverese/1.0.0'
+p_baseurl = "https://petstore.swagger.io/v2"
 from synonyms import synonym
 from parse_yaml_file import parse_yaml
 
@@ -19,7 +23,8 @@ def get_endpoint(user_story, yaml_file):
             wordsFiltered.append(w)
     tagged = nltk.pos_tag(wordsFiltered)
 
-    parse_yaml_response = parse_yaml(yaml_file)
+    parse_yaml_response, schema = parse_yaml(yaml_file)
+    print(json.dumps(schema, sort_keys=False, indent=2))
 
     get = ["see","search","observe","get","identify","detect","view","informed"]
     post = ["add","include","upload","annotate"]
@@ -73,19 +78,50 @@ def get_endpoint(user_story, yaml_file):
         set_difference=set(lem_endpoint).symmetric_difference(set(filtered_common_endpoint_tokens))
         if not set_difference:
             find_method(endpoint,req_action[1],parse_yaml_response)
+        else:
+            set_intersection= set(lem_endpoint).intersection(set(filtered_common_endpoint_tokens))
+            if not set_intersection.symmetric_difference(set(lem_endpoint)):
+                find_method(endpoint,req_action[1],parse_yaml_response)
+        # for method in parse_yaml_response[endpoint]:
+        #     if not set_difference:
+        #         if method==req_action[1]:
+        #             if method=="post" or method=="put":
+        #                 vch_schema = parse_yaml_response[endpoint][req_action[1]]["schema"]["$ref"].split("/")
+        #                 print(json.dumps(schema[vch_schema[-1]], sort_keys=False, indent=2))
+        #             print(endpoint)
+        #     else:
+        #         set_intersection= set(lem_endpoint).intersection(set(filtered_common_endpoint_tokens))
+        #         if not set_intersection.symmetric_difference(set(lem_endpoint)):
+        #             if method==req_action[1]:
+        #                 print(endpoint,req_action[1],parse_yaml_response[endpoint][req_action[1]])
+
 
 def find_method(endpoint1,check_method,parse_yaml_response):
-    endpoint_dict = dict()
     for endpoint in parse_yaml_response:
         #s = "/"+endpoint1
         if endpoint == endpoint1:
             for method in parse_yaml_response[endpoint]:
                 if method == check_method:
-                    endpoint_dict.update({endpoint:[method,parse_yaml_response[endpoint][method]]})
-                    print(endpoint_dict)
-    #                 print(endpoint," : " ,method)
-    #                 print(parse_yaml_response[endpoint][method])
-    # print()
+                    # parameter2 = {"id": "4214","additionalMetadata":"Date22/11/19","file":"songfile.mp4"}
+                    # endpoint2 = baseurl + '/song/' + parameter2['id'] + '/uploadImage'
+                    # method2 = 'post'
+                    # req_endpoint=baseurl+endpoint
+                    load = {'id': "1"}
+                    req_endpoint = ""
+                    print(endpoint)
+                    req_endpoint_lst= endpoint.split("{")
+                    for i in range(len(req_endpoint_lst)):
+                        if req_endpoint_lst[i].endswith("}"):
+                            req_endpoint_lst[i]=load["id"]
+                        req_endpoint = req_endpoint+req_endpoint_lst[i]
+                    
+                    endpoint1 = p_baseurl + req_endpoint
+                    parameter1 = None
+                    create_test_script(method,endpoint1,parameter1)
+                    return(endpoint,method,parse_yaml_response[endpoint][method])
 
-# data = "As a user, I want to identify persons in videos, and receive related information about them."
-# get_endpoint(data,"swagger(6).yaml")
+data = "I want to add and discover pet."
+get_endpoint(data,"petstore.yaml")
+
+# data = "As a user, I want to add info about perceptually similar video items."
+# get_endpoint(data,"zooniverse.yaml")

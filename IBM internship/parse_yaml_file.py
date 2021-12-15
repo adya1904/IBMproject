@@ -25,9 +25,9 @@ def parse_yaml(yaml_file):
                     if var in required_fields:
                         methods[endpoint][method].append({var:data['paths'][endpoint][method]["parameters"][i][var]}) 
     # required_data=methods
-
+    # #print(json.dumps(data["definitions"]["Pet"], sort_keys=False, indent=2))
     # with open("parsed_yaml_response","w") as json_file:
     #     json.dump(required_data,json_file, indent=2)
-    return methods
-
+    return methods, data["definitions"]
+#parse_yaml("petstore.yaml")
 
